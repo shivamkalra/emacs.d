@@ -14,7 +14,6 @@
 (depends-on "company")
 (depends-on "company-c-headers")
 (depends-on "dash-at-point")
-(depends-on "dired+")
 (depends-on "elisp-slime-nav")
 (depends-on "elpy")
 (depends-on "eww-lnum")
