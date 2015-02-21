@@ -12,7 +12,9 @@
 #+TAGS: export(e) noexport(n)
 #+STARTUP: align fold nodlcheck lognotestate content
 * Supported Platforms
-I've tested this only on =Arch Linux= but it migth works on =Os X= and =Windows= as well.
+1. Arch linux - completely
+2. Os X - partially
+3. Windows - who cares?
 * Installation
 1. Clone the repository to =~/.emacs.d=
 
