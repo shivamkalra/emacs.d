@@ -14,7 +14,7 @@
 
 * Introduction
 I'm using [[http://orgmode.org/worg/org-contrib/babel/][org-babel]] to automatically:
-1. Extract all =emacs-lisp= code from my personal [[/settings.el][settings file]] and,
+1. Extract all =emacs-lisp= code from my personal [[/settings.org][settings file]] and,
 2. Initialize Emacs with that code
 
 * Supported Platforms
