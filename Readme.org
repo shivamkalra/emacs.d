@@ -18,6 +18,8 @@ I'm using [[http://orgmode.org/worg/org-contrib/babel/][org-babel]] to automatic
 2. Initialize Emacs with that code
 
 * Supported Platforms
+I use latest and greatest =emacs=, so make sure your =emacs= is up-to-date.
+
 1. *Arch linux* - completely
 2. *Os X* - partially
 3. *Windows* - who cares?
