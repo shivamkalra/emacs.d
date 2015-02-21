@@ -42,7 +42,7 @@ Make sure your Emacs is most latest released version.
    #+BEGIN_SRC shell
    cd ~/.emacs.d
    # add cask to your path
-   export PATH=$PATH:${HOME}/bin:${HOME}/.cask/bin/
+   export PATH=$PATH:${HOME}/.cask/bin/
    cask install
    #+END_SRC
 
