@@ -36,6 +36,7 @@
 (depends-on "helm-swoop")
 (depends-on "highlight-symbol")
 (depends-on "howdoi")
+(depends-on "htmlize")
 (depends-on "ido-ubiquitous")
 (depends-on "ido-vertical-mode")
 (depends-on "js2-mode")
