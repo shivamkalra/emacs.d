@@ -1,27 +1,9 @@
-ac-comphist.dat
-auto-save-list
-backups
-eshell
-places
-projectile-bookmarks.eld
-.smex-items
-url
-tramp
-.cask/
-clang-complete
-request/
-saved-places
-projectile.cache
-.mc-lists.el
-*.elc
-/kill-ring-saved.el
-/jabber-avatar-cache/
-/bookmarks
-/smex-items
-/undo-tree/
-/local.el
-eww-bookmarks
-savehist
-settings.html
-settings.el
-.places
+# ignore everything
+*
+
+# except few files
+!.gitignore
+!settings.org
+!init.el
+!Cask
+!Readme.org
