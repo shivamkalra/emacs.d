@@ -22,7 +22,7 @@ Make sure your Emacs is most latest released version.
 
 1. *Arch linux* - completely
 2. *Os X* - partially
-3. *Windows* - who cares?
+3. *Windows* - I don't know
 
 * Installation
 1. Clone the repository to =~/.emacs.d=
