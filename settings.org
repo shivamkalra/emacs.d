@@ -1070,7 +1070,7 @@ Get code snippet from natural language text.
            ("C-c q f" . howdoi-query-line-at-point)))
 #+END_SRC
 ** Editing
-*** Auto wrap to 80 columns
+*** Auto fill mode
 #+BEGIN_SRC emacs-lisp
   (add-hook 'text-mode-hook
             (lambda ()
