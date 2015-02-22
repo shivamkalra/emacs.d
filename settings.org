@@ -1,16 +1,6 @@
 #+TITLE:   Shivam's Emacs Configuration
 #+AUTHOR:  Shivam Kalra
 #+EMAIL:   shivam.s.kalra@gmail.com
-#+LANGUAGE: en
-#+PROPERTY: header-args :tangle yes
-#+EXPORT_SELECT_TAGS: export
-#+EXPORT_EXCLUDE_TAGS: noexport
-#+OPTIONS: H:4 num:nil toc:t \n:nil @:t ::t |:t ^:{} -:t f:t *:t
-#+OPTIONS: skip:nil d:(HIDE) tags:not-in-toc
-#+TODO: SOMEDAY(s) TODO(t) INPROGRESS(i) WAITING(w@/!) NEEDSREVIEW(n@/!) | DONE(d)
-#+TODO: WAITING(w@/!) HOLD(h@/!) | CANCELLED(c@/!)
-#+TAGS: export(e) noexport(n)
-#+STARTUP: align fold nodlcheck lognotestate content
 * References
 My Emacs configuration is heavily inspired from various publicly
 available Emacs configurations on the internet. I'm listing them
