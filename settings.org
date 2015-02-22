@@ -285,8 +285,8 @@ current emacs if I'm already inside of emacs
               (setq aw-keys '(?q ?w ?e ?a ?s ?d ?z ?x ?c))
               (setq aw-background t)
               ;; ignoring neo-tree
-              (setw aw-ignore-on t)
-              (add-to-list 'aw-ignored-buffers '("*NeoTree*"))))
+              (setq aw-ignore-on t)
+              (add-to-list 'aw-ignored-buffers " *NeoTree*")))
 #+END_SRC
 *** Save place
 Navigates back to where you were editing a file next time you open it
@@ -670,11 +670,10 @@ very helpful for documentation buffers and so on.
     :idle (popwin-mode 1)
     :config
     (progn
-      (when neo-persist-show
-        (add-hook 'popwin:before-popup-hook
-                  (lambda () (setq neo-persist-show nil)))
-        (add-hook 'popwin:after-popup-hook
-                  (lambda () (setq neo-persist-show t))))))
+      (add-hook 'popwin:before-popup-hook
+                (lambda () (setq neo-persist-show nil)))
+      (add-hook 'popwin:after-popup-hook
+                (lambda () (setq neo-persist-show t)))))
 
   (defvar popwin:special-display-config-backup popwin:special-display-config)
   (setq display-buffer-function 'popwin:display-buffer)
@@ -817,7 +816,7 @@ writable-dired mode is aawwweeeesssoooommee, it makes renames super easy.
 A emacs tree plugin like NERD tree for Vim.
 #+BEGIN_SRC emacs-lisp
   (use-package neotree
-    :bind (("[f8]") . 'neotree-toggle )
+    :bind (("<f8>" . neotree-toggle))
     :config
     (progn
       (setq projectile-switch-project-action 'neotree-projectile-action)
