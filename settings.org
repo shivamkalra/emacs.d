@@ -1362,11 +1362,16 @@ from http://oremacs.com/2015/01/17/setting-up-ediff/
 Exporting org-mode to [[http://lab.hakim.se/reveal-js/#/][reveal.js]] presentations
 
 #+BEGIN_SRC emacs-lisp
-(setq org-src-fontify-natively t)
-(use-package ox-reveal
-  :config
-  (progn
-    (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/2.5.0/")))
+  (setq org-src-fontify-natively t)
+  (use-package ox-reveal
+    :config
+    (progn
+      (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/2.5.0/")
+      ;; org and windmove
+      (add-hook 'org-shiftup-final-hook 'windmove-up)
+      (add-hook 'org-shiftleft-final-hook 'windmove-left)
+      (add-hook 'org-shiftdown-final-hook 'windmove-down)
+      (add-hook 'org-shiftright-final-hook 'windmove-right)))
 #+END_SRC
 
 ** Completion frameworks
