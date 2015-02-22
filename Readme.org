@@ -1,17 +1,6 @@
 #+TITLE:   Personal Emacs Configuration
 #+AUTHOR:  Shivam Kalra
 #+EMAIL:   shivam.s.kalra@gmail.com
-#+LANGUAGE: en
-#+PROPERTY: header-args :tangle yes
-#+EXPORT_SELECT_TAGS: export
-#+EXPORT_EXCLUDE_TAGS: noexport
-#+OPTIONS: H:4 num:nil toc:t \n:nil @:t ::t |:t ^:{} -:t f:t *:t
-#+OPTIONS: skip:nil d:(HIDE) tags:not-in-toc
-#+TODO: SOMEDAY(s) TODO(t) INPROGRESS(i) WAITING(w@/!) NEEDSREVIEW(n@/!) | DONE(d)
-#+TODO: WAITING(w@/!) HOLD(h@/!) | CANCELLED(c@/!)
-#+TAGS: export(e) noexport(n)
-#+STARTUP: align fold nodlcheck lognotestate content
-
 * Introduction
 I'm using [[http://orgmode.org/worg/org-contrib/babel/][org-babel]] to automatically:
 1. Extract all =emacs-lisp= code from my personal [[/settings.org][settings file]] and,
