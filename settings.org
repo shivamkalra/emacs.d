@@ -266,7 +266,9 @@ current emacs if I'm already inside of emacs
 *** Windmove - jumping between windows
 #+BEGIN_SRC emacs-lisp
   (use-package windmove
-    :config (windmove-default-keybindings))
+    :config
+    (progn
+      (windmove-default-keybindings)))
 #+END_SRC
 *** Ace jump
 #+BEGIN_SRC emacs-lisp

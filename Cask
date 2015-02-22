@@ -44,6 +44,7 @@
 (depends-on "markdown-mode")
 (depends-on "multi-term")
 (depends-on "multiple-cursors")
+(depends-on "neotree")
 (depends-on "org-journal")
 (depends-on "org-plus-contrib")
 (depends-on "ox-reveal")
