@@ -1,7 +1,3 @@
-;;; init --- Adapted from Andrew Schwartzmeyer's Emacs init file
-
-;;; Commentary:
-;;; Fully customized Emacs configurations
 ;; (setq debug-on-error t)
 
 (require 'cask "~/.cask/cask.el")
