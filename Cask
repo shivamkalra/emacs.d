@@ -32,6 +32,7 @@
 (depends-on "helm")
 (depends-on "helm-ag")
 (depends-on "helm-descbinds")
+(depends-on "helm-git-grep")
 (depends-on "helm-projectile")
 (depends-on "helm-swoop")
 (depends-on "highlight-symbol")
