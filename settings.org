@@ -1257,8 +1257,7 @@ Per-project navigation
   (use-package projectile
     :init (projectile-global-mode)
     :diminish projectile-mode
-    :bind (;;("C-x f" . projectile-find-file)
-           ("C-c p s" . projectile-switch-project)
+    :bind (("C-c p s" . projectile-switch-project)
            ("C-c p a" . projectile-ag)
            ("C-c p g" . projectile-grep))
     :config
