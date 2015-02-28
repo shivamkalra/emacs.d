@@ -684,6 +684,8 @@ very helpful for documentation buffers and so on.
   (push '("*Pp Eval Output*" :stick t) popwin:special-display-config)
   (push '("*Helm Swoop*" :stick t :noselect t) popwin:special-display-config)
 
+  ;; company
+  (push '("*company-documentation*" :stick t) popwin:special-display-config)
   ;; magit
   (push '("*magit-process*" :stick t) popwin:special-display-config)
 
@@ -1073,6 +1075,18 @@ There's =tern= also, but I leave it turned off by default
 (use-package tern
   :init ;;(add-hook 'js-mode-hook (lambda () (tern-mode t)))
   )
+#+END_SRC
+*** Csharp
+#+BEGIN_SRC emacs-lisp
+  (use-package csharp-mode
+    :config
+    (progn
+      (use-package omnisharp
+        :config
+        (progn
+          (setq omnisharp-server-executable-path
+                "/home/shivamk/src/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")))
+      (add-hook 'csharp-mode-hook 'omnisharp-mode)))
 #+END_SRC
 ** More programming
 *** How do I
