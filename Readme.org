@@ -3,15 +3,16 @@
 #+EMAIL:   shivam.s.kalra@gmail.com
 * Introduction
 I'm using [[http://orgmode.org/worg/org-contrib/babel/][org-babel]] to automatically:
+
 1. Extract all =emacs-lisp= code from my personal [[/settings.org][settings file]] and,
-2. Initialize Emacs with that code
+2. initialize Emacs with that code
 
 * Supported Platforms
 Make sure your Emacs is most latest released version.
 
 1. *Arch linux* - completely
-2. *Os X* - partially
-3. *Windows* - I don't know
+2. *Os X* - completely
+3. *Windows* - partially (magit not working)
 
 * Installation
 1. Clone the repository to =~/.emacs.d=
