@@ -29,6 +29,8 @@
 (depends-on "git-gutter-fringe")
 (depends-on "git-gutter-fringe+")
 (depends-on "gnuplot")
+(depends-on "god-mode")
+(depends-on "golden-ratio")
 (depends-on "handlebars-mode")
 (depends-on "haskell-mode")
 (depends-on "helm")

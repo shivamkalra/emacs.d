@@ -282,6 +282,8 @@ current emacs if I'm already inside of emacs
   (use-package ace-window
     :bind (("M-p" . ace-window))
     :config (progn
+              ;; good to have higlighted line within neotree
+              (add-hook 'neotree-mode-hook (lambda () (hl-line-mode t)) )
               (setq aw-keys '(?q ?w ?e ?a ?s ?d ?z ?x ?c))
               (setq aw-background t)
               ;; ignoring neo-tree
@@ -854,8 +856,14 @@ selected region.
      nil '(("\\<\\(FIXME\\|TODO\\)\\>"
             1 '((:foreground "#d7a3ad") (:weight bold)) t)))
     ;; enables some modes for programming
-    (linum-mode t)
+    ;; disable linum mode because it has annoyign bugs
+    ;; (linum-mode t)
     (hl-line-mode t)
+    ;; 80 columns rule 
+    (setq whitespace-line-column 80) ;; limit line length
+    (setq whitespace-style '(face lines-tail))
+    (whitespace-mode t)
+    ;; start company mode
     (company-mode t)
     ;; key bind
     (define-key prog-mode-map (kbd "C-c c") 'sk/comment-or-uncomment-region-or-line))
