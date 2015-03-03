@@ -13,6 +13,7 @@
 (depends-on "cask")
 (depends-on "company")
 (depends-on "company-c-headers")
+(depends-on "company-tern")
 (depends-on "csharp-mode")
 (depends-on "dash-at-point")
 (depends-on "elisp-slime-nav")

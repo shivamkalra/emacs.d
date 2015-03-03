@@ -1056,16 +1056,23 @@ print("hello")
 #+END_SRC
 *** Javascript
 #+BEGIN_SRC emacs-lisp
-(use-package js2-mode
-  :init
-  (progn
-    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-    (defalias 'javascript-generic-mode 'js2-mode))
-  :config
-  (progn
-    (js2-imenu-extras-setup)
-    (setq-default js-auto-indent-flag nil
-                  js-indent-level 2)))
+  (use-package js2-mode
+    :init
+    (progn
+      (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+      (defalias 'javascript-generic-mode 'js2-mode))
+    :config
+    (progn
+      (js2-imenu-extras-setup)
+      (setq-default js-auto-indent-flag nil
+                    js-indent-level 2)
+      (use-package tern
+        :defer t
+        :config
+        (progn
+          (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+          (add-to-list 'company-backends 'company-tern)))))
+
 
 #+END_SRC
 
