@@ -81,8 +81,8 @@ to me.
   ;; show function in modeline
   (which-function-mode)
 #+END_SRC
-*** Misc.
-Disable annoying bell sound and startup screen..geez..
+*** Disable bell sound and startup screen
+Geez ...
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
   (setq ring-bell-function 'ignore)
@@ -282,8 +282,6 @@ current emacs if I'm already inside of emacs
   (use-package ace-window
     :bind (("M-p" . ace-window))
     :config (progn
-              ;; good to have higlighted line within neotree
-              (add-hook 'neotree-mode-hook (lambda () (hl-line-mode t)) )
               (setq aw-keys '(?q ?w ?e ?a ?s ?d ?z ?x ?c))
               (setq aw-background t)
               ;; ignoring neo-tree
