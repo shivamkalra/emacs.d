@@ -223,6 +223,12 @@ current emacs if I'm already inside of emacs
     :defer t
     :bind (("C-c s" . scratch)))
 #+END_SRC
+*** Perspective mode
+It helps me to maintain multiple window configurations for different project
+that I'm working on.
+#+BEGIN_SRC emacs-lisp
+  (persp-mode t)
+#+END_SRC
 ** Terminals
 *** multi-term
 #+BEGIN_SRC emacs-lisp
