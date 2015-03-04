@@ -324,7 +324,6 @@ instead of rigid completions
 
 #+BEGIN_SRC emacs-lisp
   (use-package ido
-    :init (ido-mode t)
     :config
     (progn
       (setq ido-use-virtual-buffers nil
@@ -353,6 +352,7 @@ I've recently started to use =helm= and liking it so far. Below is my
 bare minium setup for =helm=.
 #+BEGIN_SRC emacs-lisp
   (use-package helm
+    :init (helm-mode t)
     :bind
     (("C-M-z" . helm-resume)
      ("C-h b" . helm-descbinds)
@@ -365,9 +365,6 @@ bare minium setup for =helm=.
      ("M-g ." . helm-do-grep)
      ("C-x C-i" . helm-semantic-or-imenu)
      ("C-h t" . helm-world-time))
-    :idle (progn
-            ;;(helm-autoresize-mode 1)
-            (helm-mode 1))
     :config
     (progn
       (use-package helm-config)
@@ -386,6 +383,26 @@ bare minium setup for =helm=.
         :init (helm-descbinds-mode t))
       (use-package helm-ag
         :bind ("C-M-s" . helm-ag-this-file))
+
+      ;; some asthetics
+      (set-face-attribute 'helm-selection nil
+                          :background "#002B36"
+                          :underline t)
+      (set-face-attribute 'helm-source-header nil
+                          :background "#002B36"
+                          :foreground "#2AA198"
+                          :underline nil)
+      
+      ;; ido compatiblibility
+      (add-to-list 'helm-completing-read-handlers-alist
+                   '(find-file . ido))
+      (add-to-list 'helm-completing-read-handlers-alist
+                   '(persp-switch . ido))
+      (add-to-list 'helm-completing-read-handlers-alist
+                   '(switch-to-buffer . ido))
+      (add-to-list 'helm-completing-read-handlers-alist
+                   '(kill-buffer . ido))
+
 
       ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
       ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
