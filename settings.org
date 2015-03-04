@@ -223,12 +223,15 @@ current emacs if I'm already inside of emacs
     :defer t
     :bind (("C-c s" . scratch)))
 #+END_SRC
-*** Perspective mode
-It helps me to maintain multiple window configurations for different project
-that I'm working on.
+*** Resize images
+I use =image+= to resize image buffers.
 #+BEGIN_SRC emacs-lisp
-  (persp-mode t)
+  (use-package image+
+    :config
+    (progn
+      (imagex-global-sticky-mode 1)))
 #+END_SRC
+
 ** Terminals
 *** multi-term
 #+BEGIN_SRC emacs-lisp
@@ -1075,7 +1078,8 @@ my Python buffer (it uses =ipdb.set_trace()= function).
           (indent-according-to-mode)
           (insert ipdb-line)
           (newline-and-indent)
-          (highlight-lines-matching-regexp ipdb-regex-line 'python-debugging-line-face)))))
+          (highlight-lines-matching-regexp
+           ipdb-regex-line 'python-debugging-line-face)))))
 
 #+END_SRC
 
@@ -1154,7 +1158,6 @@ Get code snippet from natural language text.
     :bind (("C-c q l" . howdoi-query-line-at-point-replace-by-code-snippet)
            ("C-c q f" . howdoi-query-line-at-point)))
 #+END_SRC
-** Fixes and workarounds
 ** Editing
 *** Auto fill mode
 #+BEGIN_SRC emacs-lisp
@@ -1326,6 +1329,15 @@ p= bindings.
 Per-project navigation
 
 #+BEGIN_SRC emacs-lisp
+  (defun sk/projectile-action ()
+    "Open `dired' and change root directory of `neotree' to project's
+  root directory.'"
+    (interactive)
+    (let ((project-root (projectile-project-root)))
+      (neotree-dir project-root)
+      (neotree-change-root project-root)
+      (dired project-root)))
+
   (use-package projectile
     :init (projectile-global-mode)
     :diminish projectile-mode
@@ -1334,12 +1346,19 @@ Per-project navigation
            ("C-c p g" . projectile-grep))
     :config
     (progn
-      ;;(setq projectile-switch-project-action 'projectile-dired)
-      (setq projectile-switch-project-action 'neotree-projectile-action)
+      (setq projectile-switch-project-action 'sk/projectile-action)
       (use-package helm-projectile
         :bind (("C-c f" . helm-projectile)
                ("C-c p f" . helm-projectile-find-file)
-               ("C-c p g" . helm-projectile-ag)))))
+               ("C-c p g" . helm-projectile-ag)))
+      (use-package persp-projectile)))
+#+END_SRC
+** Perspective mode
+It helps me to maintain multiple window configurations for different project
+that I'm working on.
+#+BEGIN_SRC emacs-lisp
+  (use-package perspective
+    :init (add-hook 'after-init-hook 'persp-mode))
 #+END_SRC
 ** Error Checking
 *** Flycheck
@@ -1352,11 +1371,10 @@ Pretty minimally configured, but awesome tool for most dynamic languages.
     (global-set-key (kbd "C-c C-p") 'flycheck-tip-cycle-reverse))
 
   (use-package flycheck
-    :defer t
     :bind (("M-g M-n" . flycheck-next-error)
            ("M-g M-p" . flycheck-previous-error)
            ("M-g M-=" . flycheck-list-errors))
-    :idle (global-flycheck-mode)
+    :init (global-flycheck-mode)
     :diminish "fc"
     :config
     (progn
