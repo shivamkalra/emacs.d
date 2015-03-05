@@ -1,4 +1,4 @@
-#+TITLE:   Shivam's Emacs Configuration - Kalramacs
+#+TITLE:   Shivam's Emacs Configuration
 #+AUTHOR:  Shivam Kalra
 #+EMAIL:   shivam.s.kalra@gmail.com
 * References
