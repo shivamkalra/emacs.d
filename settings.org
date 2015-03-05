@@ -1360,7 +1360,7 @@ that I'm working on.
             (neotree-dir project-root))
            (t
             (neo-global--with-buffer
-                (neo-buffer--change-root project-root)))))))
+             (neo-buffer--change-root project-root)))))))
 
   (use-package perspective
     :init (add-hook 'after-init-hook 'persp-mode)
