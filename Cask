@@ -47,6 +47,7 @@
 (depends-on "ido-vertical-mode")
 (depends-on "image+")
 (depends-on "js2-mode")
+(depends-on "lua-mode")
 (depends-on "magit")
 (depends-on "markdown-mode")
 (depends-on "multi-term")
