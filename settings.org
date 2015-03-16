@@ -688,7 +688,6 @@ whatever you were working on. When you're done, press =C-c <left>=.
 
 #+BEGIN_SRC emacs-lisp
   (use-package winner
-    :ensure t
     :defer t
     :idle (winner-mode 1))
 #+END_SRC
@@ -1149,6 +1148,37 @@ There's =tern= also, but I leave it turned off by default
                 "/home/shivamk/src/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")))
       (add-hook 'csharp-mode-hook 'omnisharp-mode)))
 #+END_SRC
+*** Haskell
+Use GHC for haskell mode, and turn on auto-complete and some doc/indent modes:
+#+BEGIN_SRC emacs-lisp
+  (use-package haskell-mode
+    :commands haskell-mode
+    :config
+    (progn
+      (bind-key "C-c C-z" 'haskell-interactive-switch haskell-mode-map)
+      (bind-key "C-c C-l" 'haskell-process-load-file haskell-mode-map)
+      (bind-key "C-c C-b" 'haskell-interactive-switch haskell-mode-map)
+      (bind-key "C-c C-t" 'haskell-process-do-type haskell-mode-map)
+      (bind-key "C-c C-i" 'haskell-process-do-info haskell-mode-map)
+      (defun my-haskell-hook ()
+        (setq mode-name " λ ")
+        (turn-on-haskell-indentation)
+        (turn-on-haskell-doc-mode)
+        (capitalized-words-mode)
+        (turn-on-eldoc-mode)
+        (turn-on-haskell-decl-scan))
+      (setq haskell-font-lock-symbols 'unicode)
+      (setq haskell-literate-default 'tex)
+      (setq haskell-stylish-on-save t)
+      (setq haskell-tags-on-save t)
+      (add-hook 'haskell-mode-hook 'my-haskell-hook)))
+
+  (use-package flycheck-haskell
+    :config (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
+
+  (use-package ghc
+    :init (add-hook 'haskell-mode-hook (lambda () (ghc-init))))
+#+END_SRC
 ** More programming
 *** How do I
 Get code snippet from natural language text.
@@ -1183,7 +1213,6 @@ visualize it in ascii art if needed.
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
   :idle (global-undo-tree-mode t)
-  :diminish ""
   :config
   (progn
     (define-key undo-tree-map (kbd "C-x u") 'undo-tree-visualize)
@@ -1321,7 +1350,6 @@ p= bindings.
            ("C-x v s" . git-gutter:stage-hunk)
            ("C-x v r" . git-gutter:revert-hunk)
            ("C-x v =" . git-gutter:popup-hunk))
-    :diminish
     :init (global-git-gutter-mode t)
     :config (require 'git-gutter-fringe))
 #+END_SRC
@@ -1360,7 +1388,7 @@ that I'm working on.
             (neotree-dir project-root))
            (t
             (neo-global--with-buffer
-             (neo-buffer--change-root project-root)))))))
+              (neo-buffer--change-root project-root)))))))
 
   (use-package perspective
     :init (add-hook 'after-init-hook 'persp-mode)
@@ -1432,21 +1460,21 @@ Ediff is fantastic for looking through diffs, a lot of these settings are taken
 from http://oremacs.com/2015/01/17/setting-up-ediff/
 
 #+BEGIN_SRC emacs-lisp
-(defun my/setup-ediff ()
-  (interactive)
-  (ediff-setup-keymap)
-  (define-key ediff-mode-map "j" #'ediff-next-difference)
-  (define-key ediff-mode-map "k" #'ediff-previous-difference))
+  (defun sk/setup-ediff ()
+    (interactive)
+    (ediff-setup-keymap)
+    (define-key ediff-mode-map "j" #'ediff-next-difference)
+    (define-key ediff-mode-map "k" #'ediff-previous-difference))
 
-(use-package ediff
-  :init (add-hook 'ediff-mode-hook 'my/setup-ediff)
-  :config
-  (progn
-    (setq
-     ;; Always split nicely for wide screens
-     ediff-split-window-function 'split-window-horizontally
-     ;; Ignore whitespace
-     ediff-diff-options "-w")))
+  (use-package ediff
+    :init (add-hook 'ediff-mode-hook 'sk/setup-ediff)
+    :config
+    (progn
+      (setq
+       ;; Always split nicely for wide screens
+       ediff-split-window-function 'split-window-horizontally
+       ;; Ignore whitespace
+       ediff-diff-options "-w")))
 #+END_SRC
 
 *** vlf (view large files)
@@ -1514,7 +1542,6 @@ I use abbrev-mode to automatically correct misspellings I usually make.
 
 #+BEGIN_SRC emacs-lisp
 (use-package abbrev
-  :diminish ""
   :config
   (progn
     (define-key ctl-x-map "\C-a" 'my/ispell-word-then-abbrev)
@@ -1557,7 +1584,6 @@ Used smart-tab to complete everywhere except for ERC, shell and mu4e.
 
 #+BEGIN_SRC emacs-lisp
 (use-package smart-tab
-  :diminish ""
   :config
   (progn
     (add-to-list 'smart-tab-disabled-major-modes 'mu4e-compose-mode)
