@@ -848,6 +848,7 @@ writable-dired mode is aawwweeeesssoooommee, it makes renames super easy.
 A emacs tree plugin like NERD tree for Vim.
 #+BEGIN_SRC emacs-lisp
   (use-package neotree
+    :defer t
     :bind (("<f8>" . neotree-toggle))
     :config
     (progn
@@ -856,6 +857,30 @@ A emacs tree plugin like NERD tree for Vim.
       (define-key neotree-mode-map (kbd "d") 'neotree-delete-node)
       (define-key neotree-mode-map (kbd "r") 'neotree-rename-node)
       (define-key neotree-mode-map (kbd "c") 'neotree-change-root)))
+#+END_SRC
+*** Speed bar
+Imenu like navigational bar
+#+BEGIN_SRC emacs-lisp
+  (use-package speedbar
+    :bind (("<f8>" . speedbar))
+    :config
+    (progn
+      ;; set 
+      (setq speedbar-frame-parameters
+            '((minibuffer)
+              (width . 40)
+              (border-width . 0)
+              (menu-bar-lines . 0)
+              (tool-bar-lines . 0)
+              (unsplittable . t)
+              (left-fringe . 0)
+              ))
+      (setq speedbar-show-unknown-files t)
+      (setq speedbar-hide-button-brackets-flag t)
+      (setq speedbar-show-unknown-files t)
+      (setq speedbar-smart-directory-expand-flag t)
+      (setq sr-speedbar-max-width 70)
+      (setq sr-speedbar-width-console 40)))
 #+END_SRC
 ** Programming languages
 Configuration options for language-specific packages live here.
@@ -1119,6 +1144,7 @@ print("hello")
       (js2-imenu-extras-setup)
       (setq-default js-auto-indent-flag nil
                     js-indent-level 2)
+      ;; `tern' is autocomplete and refactor backend for JS mode
       (use-package tern
         :defer t
         :config
@@ -1126,16 +1152,8 @@ print("hello")
           (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
           (add-to-list 'company-backends 'company-tern)))))
 
-
 #+END_SRC
 
-There's =tern= also, but I leave it turned off by default
-
-#+BEGIN_SRC emacs-lisp
-(use-package tern
-  :init ;;(add-hook 'js-mode-hook (lambda () (tern-mode t)))
-  )
-#+END_SRC
 *** Csharp
 #+BEGIN_SRC emacs-lisp
   (use-package csharp-mode
@@ -1391,10 +1409,7 @@ that I'm working on.
               (neo-buffer--change-root project-root)))))))
 
   (use-package perspective
-    :init (add-hook 'after-init-hook 'persp-mode)
-    :config
-    (progn
-      (add-hook 'persp-switch-hook 'sk/neo-tree-open-project-root)))
+    :init (add-hook 'after-init-hook 'persp-mode))
 #+END_SRC
 ** Error Checking
 *** Flycheck
