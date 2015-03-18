@@ -687,9 +687,7 @@ up a buffer that you want to look at briefly before returning to
 whatever you were working on. When you're done, press =C-c <left>=.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package winner
-    :defer t
-    :idle (winner-mode 1))
+  (use-package winner)
 #+END_SRC
 ** Window management
 *** popwin
@@ -697,7 +695,6 @@ Popwin handles little popup windows at the bottom of the screen, which is
 very helpful for documentation buffers and so on.
 #+BEGIN_SRC emacs-lisp
   (use-package popwin
-    :idle (popwin-mode 1)
     :config
     (progn
       (add-hook 'popwin:before-popup-hook
@@ -1191,9 +1188,6 @@ Use GHC for haskell mode, and turn on auto-complete and some doc/indent modes:
       (setq haskell-tags-on-save t)
       (add-hook 'haskell-mode-hook 'my-haskell-hook)))
 
-  (use-package flycheck-haskell
-    :config (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
-
   (use-package ghc
     :init (add-hook 'haskell-mode-hook (lambda () (ghc-init))))
 #+END_SRC
@@ -1229,12 +1223,12 @@ Undo-tree allows me to have sane undo defaults, as well as being able to
 visualize it in ascii art if needed.
 
 #+BEGIN_SRC emacs-lisp
-(use-package undo-tree
-  :idle (global-undo-tree-mode t)
-  :config
-  (progn
-    (define-key undo-tree-map (kbd "C-x u") 'undo-tree-visualize)
-    (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo)))
+  (use-package undo-tree
+    :init (global-undo-tree-mode t)
+    :config
+    (progn
+      (define-key undo-tree-map (kbd "C-x u") 'undo-tree-visualize)
+      (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo)))
 #+END_SRC
 *** smartparens
 So, paredit is great, however, it doesn't work for non-lisp modes. Smartparens
@@ -1519,15 +1513,14 @@ Exporting org-mode to [[http://lab.hakim.se/reveal-js/#/][reveal.js]] presentati
 #+BEGIN_SRC emacs-lisp
   ;; yasn\ippet
   (use-package yasnippet
-    :defer t
+    :init (yas-reload-all)
     :config
     (progn
       (yas-global-mode)
       (unbind-key "<tab>" yas-minor-mode-map)
       (unbind-key "TAB" yas-minor-mode-map)
       (bind-key "C-c y" 'yas-expand yas-minor-mode-map)
-      (custom-set-variables '(yas/prompt-functions '(my-yas/prompt))))
-    :idle (yas-reload-all))
+      (custom-set-variables '(yas/prompt-functions '(my-yas/prompt)))))
 #+END_SRC
 *** Company mode
 Standard auto-completion configuration with company-mode

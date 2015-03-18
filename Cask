@@ -1,9 +1,11 @@
 (source gnu)
 (source melpa)
 (source org)
+(source marmalade)
 
 (depends-on "ace-jump-mode")
 (depends-on "ace-window")
+(depends-on "slime-js")
 (depends-on "ag")
 (depends-on "alert")
 (depends-on "anzu")
