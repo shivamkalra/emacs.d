@@ -4,3 +4,6 @@
 [submodule "lisp/slime"]
 	path = lisp/slime
 	url = https://github.com/slime/slime.git
+[submodule "lisp/emacs-powerline"]
+	path = lisp/emacs-powerline
+	url = https://github.com/jonathanchu/emacs-powerline.git

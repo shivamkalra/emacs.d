@@ -75,7 +75,6 @@
 (depends-on "persp-projectile")
 (depends-on "perspective")
 (depends-on "popwin")
-(depends-on "powerline")
 (depends-on "pretty-mode")
 (depends-on "projectile")
 (depends-on "puppet-mode")
