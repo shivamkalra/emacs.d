@@ -93,7 +93,8 @@ Things that cannot be categorized but applies everywhere in Emacs go here.
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Shivam Kalra"
         user-mail-address "shivam.s.kalra@gmail.com"
-        emacs-configuration-directory (file-name-directory  (file-truename "~/.emacs.d/init.el")))
+        emacs-configuration-directory (file-name-directory  
+                                       (file-truename "~/.emacs.d/init.el")))
 #+END_SRC
 
 Default directory to open a file is my =project= directory.
@@ -232,6 +233,12 @@ I use =image+= to resize image buffers.
       (imagex-global-sticky-mode 1)))
 #+END_SRC
 
+*** Whitespace
+Diminishing whitespace mode from mode line.
+#+BEGIN_SRC emacs-lisp
+  (use-package whitespace
+    :diminish whitespace-mode)
+#+END_SRC
 ** Terminals
 *** multi-term
 #+BEGIN_SRC emacs-lisp
@@ -356,6 +363,7 @@ bare minium setup for =helm=.
 #+BEGIN_SRC emacs-lisp
   (use-package helm
     :init (helm-mode t)
+    :diminish helm-mode
     :bind
     (("C-M-z" . helm-resume)
      ("C-h b" . helm-descbinds)
@@ -687,8 +695,15 @@ up a buffer that you want to look at briefly before returning to
 whatever you were working on. When you're done, press =C-c <left>=.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package winner)
+  (use-package winner
+    :init (winner-mode t))
 #+END_SRC
+*** Pretty symbol mode
+Redisplays part of Emacs buffer as pretty symbols.
+#+BEGIN_SRC emacs-lisp
+  (use-package pretty-mode)
+#+END_SRC
+
 ** Window management
 *** popwin
 Popwin handles little popup windows at the bottom of the screen, which is 
@@ -916,7 +931,8 @@ selected region.
     (company-mode t)
     ;; key bind
     (define-key prog-mode-map
-      (kbd "C-c c") 'sk/comment-or-uncomment-region-or-line))
+      (kbd "C-c c") 'sk/comment-or-uncomment-region-or-line)
+)
 
   ;; TODO: Fix linum rendering crapiness
   ;; ;; setup linum
@@ -937,6 +953,20 @@ selected region.
       
 #+END_SRC
 
+*** REPL and Slime
+#+BEGIN_SRC emacs-lisp
+  ;;; Slime
+  (use-package slime
+    :load-path "~/.emacs.d/lisp/slime/"
+    ;; loading from cask init
+    :init
+    (progn
+      (setq inferior-lisp-program "/usr/bin/sbcl"))
+    :config
+    (progn
+      (slime-setup '(slime-js slime-repl))
+      (setq slime-net-coding-system 'utf-8-unix)))
+#+END_SRC
 *** Shell
 I turned off show-paren-mode (I have show-smartparen-mode anyway) and
 flycheck (I don't want to run it!) as well as not blinking the
@@ -956,28 +986,30 @@ This contains the configuration for elisp programming
 First, turn on eldoc everywhere it's useful:
 
 #+BEGIN_SRC emacs-lisp
-(defun my/turn-on-paredit-and-eldoc ()
-  (interactive)
-  (paredit-mode 1)
-  (eldoc-mode 1))
+  ;; diminish paredit
+  (use-package paredit
+    :diminish paredit-mode)
 
-(add-hook 'emacs-lisp-mode-hook #'my/turn-on-paredit-and-eldoc)
-(add-hook 'ielm-mode-hook #'my/turn-on-paredit-and-eldoc)
+  (defun my/turn-on-paredit-and-eldoc ()
+    (interactive)
+    (paredit-mode 1)
+    (eldoc-mode 1))
+
+  (add-hook 'emacs-lisp-mode-hook #'my/turn-on-paredit-and-eldoc)
+  (add-hook 'ielm-mode-hook #'my/turn-on-paredit-and-eldoc)
 #+END_SRC
 
 And some various eldoc settings:
 
 #+BEGIN_SRC emacs-lisp
-(use-package eldoc
-  :config
-  (progn
-    (use-package diminish
-      :init
-      (progn (diminish 'eldoc-mode "ed")))
-    (setq eldoc-idle-delay 0.3)
-    (set-face-attribute 'eldoc-highlight-function-argument nil
-                        :underline t :foreground "green"
-                        :weight 'bold)))
+  (use-package eldoc
+    :diminish eldoc-mode
+    :config
+    (progn
+      (setq eldoc-idle-delay 0.3)
+      (set-face-attribute 'eldoc-highlight-function-argument nil
+                          :underline t :foreground "green"
+                          :weight 'bold)))
 #+END_SRC
 
 Change the faces for elisp regex grouping:
@@ -1126,29 +1158,29 @@ Setting up =elpy= and configuring all keybindings.
 
 #+END_SRC
 
-#+BEGIN_SRC python
-print("hello")
-#+END_SRC
 *** Javascript
 #+BEGIN_SRC emacs-lisp
+  (defun sk/js2-mode-init ()
+    "Initialize `js2-mode'"
+    (tern-mode t)
+    (setq prettify-symbols-alist '(("function" . "λ")))
+    (pretty-mode t))
+
   (use-package js2-mode
-    :init
-    (progn
-      (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-      (defalias 'javascript-generic-mode 'js2-mode))
+    :mode ("\\.js\\'" . js2-mode)
+    :interpreter "node"
+    :init (defalias 'javascript-generic-mode 'js2-mode)
     :config
     (progn
       (js2-imenu-extras-setup)
-      (setq-default js-auto-indent-flag nil
-                    js-indent-level 2)
-      ;; `tern' is autocomplete and refactor backend for JS mode
-      (use-package tern
-        :defer t
-        :config
-        (progn
-          (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-          (add-to-list 'company-backends 'company-tern)))))
+      (setq-default js-auto-indent-flag nil js-indent-level 2)
+      (add-hook 'js2-mode-hook 'sk/js2-mode-init)))
 
+  ;; `tern' is autocomplete and refactor backend for JS mode
+  (use-package tern
+    :defer t
+    :diminish tern-mode
+    :init (add-to-list 'company-backends 'company-tern))
 #+END_SRC
 
 *** Csharp
@@ -1225,89 +1257,92 @@ visualize it in ascii art if needed.
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :init (global-undo-tree-mode t)
+    :diminish undo-tree-mode
     :config
     (progn
       (define-key undo-tree-map (kbd "C-x u") 'undo-tree-visualize)
-      (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo)))
+      (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo)
+      (define-key undo-tree-map (kbd "C-\\") 'undo-tree-redo)))
 #+END_SRC
 *** smartparens
 So, paredit is great, however, it doesn't work for non-lisp modes. Smartparens
 works pretty well, so I use it everywhere paredit-mode doesn't work.
 
 #+BEGIN_SRC emacs-lisp
-(use-package smartparens
-  :bind (("M-9" . sp-backward-sexp)
-         ("M-0" . sp-forward-sexp))
-  :config
-  (progn
-    (add-to-list 'sp-sexp-suffix '(json-mode regex ""))
-    (add-to-list 'sp-sexp-suffix '(es-mode regex ""))
+  (use-package smartparens
+    :bind (("M-9" . sp-backward-sexp)
+           ("M-0" . sp-forward-sexp))
+    :diminish smartparens-mode
+    :config
+    (progn
+      (add-to-list 'sp-sexp-suffix '(json-mode regex ""))
+      (add-to-list 'sp-sexp-suffix '(es-mode regex ""))
 
-    (use-package smartparens-config)
-    (add-hook 'sh-mode-hook
-              (lambda ()
-                ;; Remove when https://github.com/Fuco1/smartparens/issues/257
-                ;; is fixed
-                (setq sp-autoescape-string-quote nil)))
+      (use-package smartparens-config)
+      (add-hook 'sh-mode-hook
+                (lambda ()
+                  ;; Remove when https://github.com/Fuco1/smartparens/issues/257
+                  ;; is fixed
+                  (setq sp-autoescape-string-quote nil)))
 
-    ;; Remove the M-<backspace> binding that smartparens adds
-    (let ((disabled '("M-<backspace>")))
-      (setq sp-smartparens-bindings
-            (cl-remove-if (lambda (key-command)
-                            (member (car key-command) disabled))
-                          sp-smartparens-bindings)))
+      ;; Remove the M-<backspace> binding that smartparens adds
+      (let ((disabled '("M-<backspace>")))
+        (setq sp-smartparens-bindings
+              (cl-remove-if (lambda (key-command)
+                              (member (car key-command) disabled))
+                            sp-smartparens-bindings)))
 
-    (define-key sp-keymap (kbd "C-(") 'sp-forward-barf-sexp)
-    (define-key sp-keymap (kbd "C-)") 'sp-forward-slurp-sexp)
-    (define-key sp-keymap (kbd "M-(") 'sp-forward-barf-sexp)
-    (define-key sp-keymap (kbd "M-)") 'sp-forward-slurp-sexp)
-    (define-key sp-keymap (kbd "C-M-f") 'sp-forward-sexp)
-    (define-key sp-keymap (kbd "C-M-b") 'sp-backward-sexp)
-    (define-key sp-keymap (kbd "C-M-f") 'sp-forward-sexp)
-    (define-key sp-keymap (kbd "C-M-b") 'sp-backward-sexp)
-    (define-key sp-keymap (kbd "C-M-d") 'sp-down-sexp)
-    (define-key sp-keymap (kbd "C-M-a") 'sp-backward-down-sexp)
-    (define-key sp-keymap (kbd "C-S-a") 'sp-beginning-of-sexp)
-    (define-key sp-keymap (kbd "C-S-d") 'sp-end-of-sexp)
-    (define-key sp-keymap (kbd "C-M-e") 'sp-up-sexp)
-    (define-key emacs-lisp-mode-map (kbd ")") 'sp-up-sexp)
-    (define-key sp-keymap (kbd "C-M-u") 'sp-backward-up-sexp)
-    (define-key sp-keymap (kbd "C-M-t") 'sp-transpose-sexp)
-    ;; (define-key sp-keymap (kbd "C-M-n") 'sp-next-sexp)
-    ;; (define-key sp-keymap (kbd "C-M-p") 'sp-previous-sexp)
-    (define-key sp-keymap (kbd "C-M-k") 'sp-kill-sexp)
-    (define-key sp-keymap (kbd "C-M-w") 'sp-copy-sexp)
-    (define-key sp-keymap (kbd "M-D") 'sp-splice-sexp)
-    (define-key sp-keymap (kbd "C-]") 'sp-select-next-thing-exchange)
-    (define-key sp-keymap (kbd "C-<left_bracket>") 'sp-select-previous-thing)
-    (define-key sp-keymap (kbd "C-M-]") 'sp-select-next-thing)
-    (define-key sp-keymap (kbd "M-F") 'sp-forward-symbol)
-    (define-key sp-keymap (kbd "M-B") 'sp-backward-symbol)
-    (define-key sp-keymap (kbd "H-t") 'sp-prefix-tag-object)
-    (define-key sp-keymap (kbd "H-p") 'sp-prefix-pair-object)
-    (define-key sp-keymap (kbd "H-s c") 'sp-convolute-sexp)
-    (define-key sp-keymap (kbd "H-s a") 'sp-absorb-sexp)
-    (define-key sp-keymap (kbd "H-s e") 'sp-emit-sexp)
-    (define-key sp-keymap (kbd "H-s p") 'sp-add-to-previous-sexp)
-    (define-key sp-keymap (kbd "H-s n") 'sp-add-to-next-sexp)
-    (define-key sp-keymap (kbd "H-s j") 'sp-join-sexp)
-    (define-key sp-keymap (kbd "H-s s") 'sp-split-sexp)
+      (define-key sp-keymap (kbd "C-(") 'sp-forward-barf-sexp)
+      (define-key sp-keymap (kbd "C-)") 'sp-forward-slurp-sexp)
+      (define-key sp-keymap (kbd "M-(") 'sp-forward-barf-sexp)
+      (define-key sp-keymap (kbd "M-)") 'sp-forward-slurp-sexp)
+      (define-key sp-keymap (kbd "C-M-f") 'sp-forward-sexp)
+      (define-key sp-keymap (kbd "C-M-b") 'sp-backward-sexp)
+      (define-key sp-keymap (kbd "C-M-f") 'sp-forward-sexp)
+      (define-key sp-keymap (kbd "C-M-b") 'sp-backward-sexp)
+      (define-key sp-keymap (kbd "C-M-d") 'sp-down-sexp)
+      (define-key sp-keymap (kbd "C-M-a") 'sp-backward-down-sexp)
+      (define-key sp-keymap (kbd "C-S-a") 'sp-beginning-of-sexp)
+      (define-key sp-keymap (kbd "C-S-d") 'sp-end-of-sexp)
+      (define-key sp-keymap (kbd "C-M-e") 'sp-up-sexp)
+      (define-key emacs-lisp-mode-map (kbd ")") 'sp-up-sexp)
+      (define-key sp-keymap (kbd "C-M-u") 'sp-backward-up-sexp)
+      (define-key sp-keymap (kbd "C-M-t") 'sp-transpose-sexp)
+      ;; (define-key sp-keymap (kbd "C-M-n") 'sp-next-sexp)
+      ;; (define-key sp-keymap (kbd "C-M-p") 'sp-previous-sexp)
+      (define-key sp-keymap (kbd "C-M-k") 'sp-kill-sexp)
+      (define-key sp-keymap (kbd "C-M-w") 'sp-copy-sexp)
+      (define-key sp-keymap (kbd "M-D") 'sp-splice-sexp)
+      (define-key sp-keymap (kbd "C-]") 'sp-select-next-thing-exchange)
+      (define-key sp-keymap (kbd "C-<left_bracket>") 'sp-select-previous-thing)
+      (define-key sp-keymap (kbd "C-M-]") 'sp-select-next-thing)
+      (define-key sp-keymap (kbd "M-F") 'sp-forward-symbol)
+      (define-key sp-keymap (kbd "M-B") 'sp-backward-symbol)
+      (define-key sp-keymap (kbd "H-t") 'sp-prefix-tag-object)
+      (define-key sp-keymap (kbd "H-p") 'sp-prefix-pair-object)
+      (define-key sp-keymap (kbd "H-s c") 'sp-convolute-sexp)
+      (define-key sp-keymap (kbd "H-s a") 'sp-absorb-sexp)
+      (define-key sp-keymap (kbd "H-s e") 'sp-emit-sexp)
+      (define-key sp-keymap (kbd "H-s p") 'sp-add-to-previous-sexp)
+      (define-key sp-keymap (kbd "H-s n") 'sp-add-to-next-sexp)
+      (define-key sp-keymap (kbd "H-s j") 'sp-join-sexp)
+      (define-key sp-keymap (kbd "H-s s") 'sp-split-sexp)
 
-    (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
-    ;; Remove '' pairing in elisp because quoting is used a ton
-    (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
+      (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
+      ;; Remove '' pairing in elisp because quoting is used a ton
+      (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
 
-    (sp-with-modes '(html-mode sgml-mode)
-      (sp-local-pair "<" ">"))
+      (sp-with-modes '(html-mode sgml-mode)
+        (sp-local-pair "<" ">"))
 
-    (sp-with-modes sp--lisp-modes
-      (sp-local-pair "(" nil :bind "C-("))))
+      (sp-with-modes sp--lisp-modes
+        (sp-local-pair "(" nil :bind "C-("))))
 
 
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (smartparens-global-mode t)
-            (show-smartparens-global-mode t)))
+  (add-hook 'prog-mode-hook
+            (lambda ()
+              (smartparens-global-mode t)
+              (show-smartparens-global-mode t)))
 #+END_SRC
 ** Version control
 *** magit
@@ -1363,26 +1398,24 @@ p= bindings.
            ("C-x v r" . git-gutter:revert-hunk)
            ("C-x v =" . git-gutter:popup-hunk))
     :init (global-git-gutter-mode t)
-    :config (require 'git-gutter-fringe))
+    :diminish git-gutter-mode
+    :config
+    (progn
+      (use-package git-gutter-fringe)))
 #+END_SRC
 ** Projectile
 Per-project navigation
 
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
-    :init (projectile-global-mode)
     :diminish projectile-mode
-    :bind (("C-c p s" . projectile-switch-project)
-           ("C-c p a" . projectile-ag)
-           ("C-c p g" . projectile-grep))
+    :init (projectile-global-mode t)
     :config
     (progn
       ;; this remaps projectile-switch-project
       (use-package persp-projectile)
       (use-package helm-projectile
-        :bind (("C-c f" . helm-projectile)
-               ("C-c p f" . helm-projectile-find-file)
-               ("C-c p g" . helm-projectile-ag)))))
+        :bind (("C-c f" . helm-projectile)))))
 #+END_SRC
 ** Perspective mode
 It helps me to maintain multiple window configurations for different project
@@ -1420,7 +1453,7 @@ Pretty minimally configured, but awesome tool for most dynamic languages.
            ("M-g M-p" . flycheck-previous-error)
            ("M-g M-=" . flycheck-list-errors))
     :init (global-flycheck-mode)
-    :diminish "fc"
+    :diminish flycheck-mode
     :config
     (progn
       (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
@@ -1549,33 +1582,32 @@ Standard auto-completion configuration with company-mode
 I use abbrev-mode to automatically correct misspellings I usually make.
 
 #+BEGIN_SRC emacs-lisp
-(use-package abbrev
-  :config
-  (progn
-    (define-key ctl-x-map "\C-a" 'my/ispell-word-then-abbrev)
+  (use-package abbrev
+    :diminish abbrev-mode
+    :config
+    (progn
+      (defun my/ispell-word-then-abbrev (p)
+        "Call `ispell-word'. Then create an abbrev for the correction made.
+  With prefix P, create local abbrev. Otherwise it will be global."
+        (interactive "P")
+        (let ((bef (downcase (or (thing-at-point 'word) ""))) aft)
+          (call-interactively 'ispell-word)
+          (setq aft (downcase (or (thing-at-point 'word) "")))
+          (unless (string= aft bef)
+            (message "\"%s\" now expands to \"%s\" %sally"
+                     bef aft (if p "loc" "glob"))
+            (define-abbrev
+              (if p local-abbrev-table global-abbrev-table)
+              bef aft))))
 
-    (defun my/ispell-word-then-abbrev (p)
-      "Call `ispell-word'. Then create an abbrev for the correction made.
-With prefix P, create local abbrev. Otherwise it will be global."
-      (interactive "P")
-      (let ((bef (downcase (or (thing-at-point 'word) ""))) aft)
-        (call-interactively 'ispell-word)
-        (setq aft (downcase (or (thing-at-point 'word) "")))
-        (unless (string= aft bef)
-          (message "\"%s\" now expands to \"%s\" %sally"
-                   bef aft (if p "loc" "glob"))
-          (define-abbrev
-            (if p local-abbrev-table global-abbrev-table)
-            bef aft))))
+      (setq save-abbrevs t)
+      (setq-default abbrev-mode t)))
 
-    (setq save-abbrevs t)
-    (setq-default abbrev-mode t)))
+  (defun my/enable-abbrev-mode ()
+    (interactive)
+    (abbrev-mode t))
 
-(defun my/enable-abbrev-mode ()
-  (interactive)
-  (abbrev-mode t))
-
-(add-hook 'prog-mode-hook #'my/enable-abbrev-mode)
+  (add-hook 'prog-mode-hook #'my/enable-abbrev-mode)
 #+END_SRC
 
 From https://github.com/purcell/emacs.d/blob/master/lisp/init-auto-complete.el -

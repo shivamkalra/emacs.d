@@ -1,0 +1,6 @@
+[submodule "lisp/swank-js"]
+	path = lisp/swank-js
+	url = https://github.com/swank-js/swank-js.git
+[submodule "lisp/slime"]
+	path = lisp/slime
+	url = https://github.com/slime/slime.git

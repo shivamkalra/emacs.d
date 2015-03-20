@@ -22,5 +22,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(cursor ((t (:background "yellow" :foreground "#002b36" :inverse-video t))))
- '(hl-line ((t (:background "#1b2a2e")))))
+ '(cursor ((t (:background "yellow" :foreground "#002b36" :inverse-video t)))))
