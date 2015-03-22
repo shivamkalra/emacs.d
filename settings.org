@@ -97,9 +97,9 @@ to me.
       (setq underline-minimum-offset 8)
       (set-face-attribute 'mode-line nil
                           :background "#00222b"
-                          :font "Fantasque Sans Mono-9:weight=black")
+                          :font "Fantasque Sans Mono-10:weight=black")
       (set-face-attribute 'mode-line-inactive nil
-                          :font "Fantasque Sans Mono-9:weight=black")
+                          :font "Fantasque Sans Mono-10:weight=black")
       (sml/apply-theme 'automatic)))
 #+END_SRC
 *** Disable bell sound and startup screen
