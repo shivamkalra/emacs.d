@@ -334,6 +334,12 @@ Navigates back to where you were editing a file next time you open it
     (setq-default save-place t)
     (setq save-place-file (expand-file-name ".places" user-emacs-directory)))
 #+END_SRC
+*** Goto last change
+Move point through buffer-undo-list positions
+#+BEGIN_SRC emacs-lisp
+  (use-package goto-last-change
+    :bind ("C-c C-/" . goto-last-change))
+#+END_SRC
 ** Interface enhacements
 *** smooth-scrolling
 Smooth scrolling means when you hit =C-n= to go to the next line at the bottom
@@ -1438,7 +1444,37 @@ p= bindings.
     :diminish git-gutter-mode
     :config
     (progn
-      (use-package git-gutter-fringe)))
+      (use-package git-gutter-fringe
+        :config
+        (progn
+          (fringe-helper-define 'git-gutter-fr:added nil
+            "........"
+            "...XX..."
+            "...XX..."
+            ".XXXXXX."
+            ".XXXXXX."
+            "...XX..."
+            "...XX..."
+            "........")
+          (fringe-helper-define 'git-gutter-fr:deleted nil
+            "........"
+            "........"
+            "........"
+            ".XXXXXX."
+            ".XXXXXX."
+            "........"
+            "........"
+            "........")
+          (fringe-helper-define 'git-gutter-fr:modified nil
+            "........"
+            "...XX..."
+            "...XX..."
+            "...XX..."
+            "...XX..."
+            "...XX..."
+            "...XX..."
+            "........")
+          (set-face-foreground 'git-gutter-fr:modified "yellow")))))
 #+END_SRC
 ** Projectile
 Per-project navigation
