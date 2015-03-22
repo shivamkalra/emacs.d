@@ -81,26 +81,19 @@ to me.
     ;; show function in modeline
     (which-function-mode)
 
-  (use-package powerline
-    :load-path "~/.emacs.d/lisp/emacs-powerline/"
+  (use-package smart-mode-line
+    :init (sml/setup)
     :config
     (progn
-      (setq powerline-color1 "#033d4d")
-      (setq powerline-color2 "#062730")
+      ;; https://github.com/bbatsov/solarized-emacs/issues/113
+      (setq x-use-underline-position-properties nil)
+      (setq underline-minimum-offset 8)
       (set-face-attribute 'mode-line nil
-                          :foreground "#e0e2E4"
-                          :font "Fantasque Sans Mono-9:weight=black"
-                          :background "#0d5164"
-                          :overline nil
-                          :underline nil
-                          :box nil)
+                          :background "#00222b"
+                          :font "Fantasque Sans Mono-9:weight=black")
       (set-face-attribute 'mode-line-inactive nil
-                          :box nil
-                          :background "#062730"
-                          :font "Fantasque Sans Mono-9:weight=black"
-                          :overline nil
-                          :underline nil)
-      (setq powerline-arrow-shape 'arrow)))
+                          :font "Fantasque Sans Mono-9:weight=black")
+      (sml/apply-theme 'automatic)))
 #+END_SRC
 *** Disable bell sound and startup screen
 Geez ...
@@ -1199,6 +1192,7 @@ Setting up =elpy= and configuring all keybindings.
   (defun sk/js2-mode-init ()
     "Initialize `js2-mode'"
     (tern-mode t)
+    (setq mode-name "JS")
     (setq prettify-symbols-alist '(("function" . "λ")))
     (pretty-mode t))
 

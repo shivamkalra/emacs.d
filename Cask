@@ -82,6 +82,7 @@
 (depends-on "scratch")
 (depends-on "slime")
 (depends-on "sly")
+(depends-on "smart-mode-line")
 (depends-on "smart-tab")
 (depends-on "smartparens")
 (depends-on "smex")
