@@ -64,6 +64,13 @@ my =rxvt= terminal. I tend to use Emacs more in X system than terminal.
         (load-theme 'solarized-dark t))
     (load-theme 'wombat t))
 #+END_SRC
+*** Cursor color
+Cursor color should be bright yellow.
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'cursor nil
+                      :background "yellow"
+                      :foreground "#002b36")
+#+END_SRC
 *** Fonts
 I have been using [[http://openfontlibrary.org/en/font/fantasque-sans-mono][Fantasque Sans Mono]] lately and it looks pretty nice
 to me.
