@@ -949,10 +949,12 @@ selected region.
             1 '((:foreground "#d7a3ad") (:weight bold)) t)))
 
     ;; enable linum depending on buffer-size
-    (if (< (buffer-size) 200000)
+    ;; given each line on average in 80 columns
+    (if (< (/ (buffer-size) 80) 5000)
         (progn
           (linum-mode t)
           (hlinum-activate)))
+    (hi-lock-mode t)
     (hl-line-mode t)
 
     ;; 80 columns rule 
